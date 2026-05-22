@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VK Fit — Virat Kohli Inspired Fitness</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1D9E75;
+    --green-light: #E1F5EE;
+    --green-dark: #085041;
+    --amber: #EF9F27;
+    --amber-light: #FAEEDA;
+    --blue: #378ADD;
+    --blue-light: #E6F1FB;
+    --purple: #7F77DD;
+    --purple-light: #EEEDFE;
+    --red: #E24B4A;
+    --red-light: #FCEBEB;
+    --bg: #0A0A0A;
+    --bg2: #111111;
+    --bg3: #1A1A1A;
+    --card: #161616;
+    --border: rgba(255,255,255,0.07);
+    --text: #F0EDE8;
+    --muted: #888884;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 15px; line-height: 1.6; overflow-x: hidden; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 60px;
+    background: rgba(10,10,10,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--font-display); font-size: 28px; letter-spacing: 2px; color: var(--green); cursor: pointer; }
+  .nav-links { display: flex; gap: 6px; }
+  .nav-link {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 6px; cursor: pointer; border: none;
+    background: transparent; color: var(--muted); transition: all 0.2s;
+  }
+  .nav-link:hover, .nav-link.active { background: var(--green); color: #fff; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 80px 2rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(29,158,117,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 100%);
+  }
+  .hero-tag {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--green); border: 1px solid rgba(29,158,117,0.4);
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 1.5rem; display: inline-block;
+  }
+  .hero-title {
+    font-family: var(--font-display); font-size: clamp(72px, 14vw, 160px);
+    line-height: 0.9; letter-spacing: 4px;
+    background: linear-gradient(180deg, #fff 40%, rgba(255,255,255,0.3));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+  }
+  .hero-sub { font-size: 16px; color: var(--muted); max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.7; }
+  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary {
+    background: var(--green); color: #fff; border: none;
+    padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px;
+  }
+  .btn-primary:hover { background: #1bb882; transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent; color: var(--text); border: 1px solid var(--border);
+    padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem;
+    position: relative; z-index: 1;
+  }
+  .hstat-val { font-family: var(--font-display); font-size: 42px; color: var(--green); line-height: 1; }
+  .hstat-lbl { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-top: 4px; }
+
+  /* SECTIONS */
+  .section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--green); margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: var(--font-display); font-size: clamp(36px, 6vw, 64px);
+    letter-spacing: 2px; line-height: 1; margin-bottom: 0.75rem;
+  }
+  .section-sub { color: var(--muted); font-size: 15px; max-width: 560px; margin-bottom: 3rem; line-height: 1.7; }
+
+  /* PHASE TABS */
+  .phase-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
+  .phase-tab {
+    font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: 8px;
+    cursor: pointer; border: 1px solid var(--border); background: var(--card);
+    color: var(--muted); transition: all 0.2s;
+  }
+  .phase-tab.active { background: var(--green); border-color: var(--green); color: #fff; }
+  .phase-tab:hover:not(.active) { border-color: var(--green); color: var(--green); }
+
+  /* DAY CARDS */
+  .day-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+  .day-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s;
+  }
+  .day-card:hover { border-color: rgba(29,158,117,0.4); }
+  .day-card.active { border-color: var(--green); background: rgba(29,158,117,0.08); }
+  .dc-day { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .dc-name { font-size: 14px; font-weight: 500; color: var(--text); margin: 4px 0; }
+  .dc-tag { font-size: 10px; padding: 2px 8px; border-radius: 999px; display: inline-block; margin-top: 4px; }
+  .tag-strength { background: rgba(55,138,221,0.15); color: #7fb8f0; }
+  .tag-cardio { background: rgba(239,159,39,0.15); color: #f0ba5a; }
+  .tag-legs { background: rgba(127,119,221,0.15); color: #b4b0f0; }
+  .tag-full { background: rgba(226,75,74,0.15); color: #f09090; }
+
+  /* WORKOUT DETAIL */
+  .workout-detail { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; }
+  .wd-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .wd-title { font-family: var(--font-display); font-size: 28px; letter-spacing: 1px; }
+  .wd-meta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .wd-cals { font-family: var(--font-mono); font-size: 13px; color: var(--green); background: rgba(29,158,117,0.1); padding: 6px 14px; border-radius: 8px; }
+  .ex-section { margin-bottom: 1.25rem; }
+  .ex-sec-title {
+    font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--muted); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  .ex-row {
+    display: flex; align-items: flex-start; gap: 12px; padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .ex-row:last-child { border-bottom: none; }
+  .ex-n {
+    width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    flex-shrink: 0;
+  }
+  .ex-n-green { background: rgba(29,158,117,0.15); color: var(--green); }
+  .ex-n-blue { background: rgba(55,138,221,0.15); color: #7fb8f0; }
+  .ex-n-purple { background: rgba(127,119,221,0.15); color: #b4b0f0; }
+  .ex-n-amber { background: rgba(239,159,39,0.15); color: #f0ba5a; }
+  .ex-body { flex: 1; }
+  .ex-name { font-size: 14px; font-weight: 500; color: var(--text); }
+  .ex-note { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+  .ex-sets { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .safe-pill { font-size: 10px; background: rgba(29,158,117,0.12); color: var(--green); padding: 2px 7px; border-radius: 999px; margin-left: 6px; }
+  .tip-strip {
+    background: rgba(29,158,117,0.08); border-left: 3px solid var(--green);
+    border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 1rem;
+  }
+  .tip-strip p { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+
+  /* LEG REHAB */
+  .rehab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+  .rehab-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem;
+  }
+  .rehab-card-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .rehab-card-how { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+  .rehab-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .rpill { font-size: 10px; padding: 3px 9px; border-radius: 999px; }
+
+  /* MEAL */
+  .meal-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meal-tab {
+    font-size: 13px; padding: 8px 18px; border-radius: 8px;
+    cursor: pointer; border: 1px solid var(--border); background: var(--card);
+    color: var(--muted); transition: all 0.2s; font-weight: 500;
+  }
+  .meal-tab.active { background: var(--amber); border-color: var(--amber); color: #000; }
+  .meal-tab:hover:not(.active) { border-color: var(--amber); color: var(--amber); }
+  .macro-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 2rem; }
+  .macro-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 12px; text-align: center;
+  }
+  .macro-val { font-family: var(--font-display); font-size: 32px; letter-spacing: 1px; }
+  .macro-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .meal-detail { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; }
+  .meal-hd { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .meal-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .meal-title-text { font-family: var(--font-display); font-size: 24px; letter-spacing: 1px; }
+  .meal-time-text { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .meal-kcal { font-family: var(--font-mono); font-size: 13px; margin-left: auto; padding: 6px 14px; border-radius: 8px; }
+  .food-item { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .food-item:last-child { border-bottom: none; }
+  .food-dot2 { width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+  .food-name2 { font-size: 14px; font-weight: 500; color: var(--text); }
+  .food-desc { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+  .food-qty2 { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+
+  /* AVOID & RULES */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .avoid-list, .rules-list { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; }
+  .list-title { font-family: var(--font-display); font-size: 22px; letter-spacing: 1px; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .avoid-item { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.04); align-items: flex-start; }
+  .avoid-item:last-child { border-bottom: none; }
+  .x-dot { width: 20px; height: 20px; border-radius: 6px; background: rgba(226,75,74,0.15); color: #f09090; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .check-dot { width: 20px; height: 20px; border-radius: 6px; background: rgba(29,158,117,0.15); color: var(--green); font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .ai-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .ai-note { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+
+  /* SUPPLEMENTS */
+  .supp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .supp-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1rem 1.25rem; display: flex; align-items: flex-start; gap: 12px;
+  }
+  .supp-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .supp-name { font-size: 14px; font-weight: 500; color: var(--text); }
+  .supp-dose { font-family: var(--font-mono); font-size: 12px; color: var(--green); margin-top: 3px; }
+  .supp-note { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+
+  /* WARNING BOX */
+  .warn-box {
+    background: rgba(226,75,74,0.08); border: 1px solid rgba(226,75,74,0.25);
+    border-radius: 10px; padding: 14px 18px; margin-bottom: 2rem;
+    font-size: 13px; color: rgba(255,180,180,0.9); line-height: 1.6;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border); padding: 2rem; text-align: center;
+    font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.5px;
+  }
+
+  /* SECTION DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+  /* SCROLL FADE IN */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 640px) {
+    .hero-stats { gap: 1.5rem; }
+    .macro-row { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    nav { padding: 0 1rem; }
+    .nav-links { gap: 3px; }
+    .nav-link { padding: 5px 10px; font-size: 11px; }
+    .section { padding: 3rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="scrollTo(0,0)">VK FIT</div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showSection('workout')">Workout</button>
+    <button class="nav-link" onclick="showSection('legs')">Legs</button>
+    <button class="nav-link" onclick="showSection('meals')">Meals</button>
+    <button class="nav-link" onclick="showSection('supps')">Supplements</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-tag">Virat Kohli Inspired</div>
+  <div class="hero-title">VK FIT</div>
+  <p class="hero-sub">Your complete lean body transformation plan — 5-day workout, leg rehab, meal plan, and supplement guide. All in one place.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="showSection('workout')">Start Workout Plan</button>
+    <button class="btn-ghost" onclick="showSection('meals')">View Meal Plan</button>
+  </div>
+  <div class="hero-stats">
+    <div><div class="hstat-val">5</div><div class="hstat-lbl">Training days</div></div>
+    <div><div class="hstat-val">4</div><div class="hstat-lbl">Meals/day</div></div>
+    <div><div class="hstat-val">160g</div><div class="hstat-lbl">Protein/day</div></div>
+    <div><div class="hstat-val">3</div><div class="hstat-lbl">Rehab phases</div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- WORKOUT SECTION -->
+<div id="section-workout">
+<div class="section fade-in">
+  <div class="section-tag">// 01 — workout plan</div>
+  <div class="section-title">5-DAY SPLIT</div>
+  <p class="section-sub">Lean muscle + abs every day. Upper body focused — safe for your femur rod. Short rest periods to burn fat while building muscle.</p>
+
+  <div class="day-grid" id="dayGrid"></div>
+  <div class="workout-detail" id="workoutDetail"></div>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- LEGS SECTION -->
+<div id="section-legs">
+<div class="section fade-in">
+  <div class="section-tag">// 02 — leg rehab & strengthening</div>
+  <div class="section-title">LEG PLAN</div>
+  <p class="section-sub">3-phase resistance band program. Zero axial load on femur. Designed to rebuild strength safely around your intramedullary rod.</p>
+
+  <div class="warn-box">⚠️ Always get clearance from your orthopaedic surgeon before starting. Stop if you feel pain at the rod site.</div>
+
+  <div class="phase-tabs" id="phaseTabs"></div>
+  <div id="phaseDetail"></div>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- MEALS SECTION -->
+<div id="section-meals">
+<div class="section fade-in">
+  <div class="section-tag">// 03 — meal plan</div>
+  <div class="section-title">NUTRITION</div>
+  <p class="section-sub">Non-veg, 4 meals per day. Indian foods. Optimised for lean muscle — high protein, moderate carbs, healthy fats.</p>
+
+  <div class="macro-row">
+    <div class="macro-card"><div class="macro-val" style="color:var(--green);">2200</div><div class="macro-lbl">kcal/day</div></div>
+    <div class="macro-card"><div class="macro-val" style="color:#7fb8f0;">160g</div><div class="macro-lbl">Protein</div></div>
+    <div class="macro-card"><div class="macro-val" style="color:var(--amber);">220g</div><div class="macro-lbl">Carbs</div></div>
+    <div class="macro-card"><div class="macro-val" style="color:#b4b0f0;">65g</div><div class="macro-lbl">Fats</div></div>
+  </div>
+
+  <div class="meal-tabs" id="mealTabs"></div>
+  <div class="meal-detail" id="mealDetail"></div>
+
+  <div style="margin-top: 2rem;">
+    <div class="two-col">
+      <div class="avoid-list">
+        <div class="list-title" style="color: #f09090;">AVOID THESE</div>
+        <div id="avoidList"></div>
+      </div>
+      <div class="rules-list">
+        <div class="list-title" style="color: var(--green);">GOLDEN RULES</div>
+        <div id="rulesList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- SUPPLEMENTS SECTION -->
+<div id="section-supps">
+<div class="section fade-in">
+  <div class="section-tag">// 04 — supplements</div>
+  <div class="section-title">SUPPLEMENTS</div>
+  <p class="section-sub">Real food first — supplements fill the gaps. Creatine monohydrate is your #1 priority for lean muscle.</p>
+
+  <div class="supp-grid" id="suppGrid"></div>
+
+  <div style="margin-top: 2rem; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem;">
+    <div style="font-family: var(--font-display); font-size: 22px; letter-spacing: 1px; margin-bottom: 1rem; color: var(--amber);">CREATINE GUIDE</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+      <div style="background: var(--bg3); border-radius: 10px; padding: 12px 16px;">
+        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Type</div>
+        <div style="font-size: 14px; font-weight: 500;">Creatine Monohydrate</div>
+      </div>
+      <div style="background: var(--bg3); border-radius: 10px; padding: 12px 16px;">
+        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Dose</div>
+        <div style="font-size: 14px; font-weight: 500;">5g after workout</div>
+      </div>
+      <div style="background: var(--bg3); border-radius: 10px; padding: 12px 16px;">
+        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Mix with</div>
+        <div style="font-size: 14px; font-weight: 500;">Water / juice / shake</div>
+      </div>
+      <div style="background: var(--bg3); border-radius: 10px; padding: 12px 16px;">
+        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Water daily</div>
+        <div style="font-size: 14px; font-weight: 500;">3.5 – 4 litres</div>
+      </div>
+      <div style="background: var(--bg3); border-radius: 10px; padding: 12px 16px;">
+        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Best brands (India)</div>
+        <div style="font-size: 14px; font-weight: 500;">AS-IT-IS · MuscleBlaze · ON</div>
+      </div>
+      <div style="background: var(--bg3); border-radius: 10px; padding: 12px 16px;">
+        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Price range</div>
+        <div style="font-size: 14px; font-weight: 500;">₹600 – ₹1,100 / 500g</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer>
+  VK FIT &nbsp;·&nbsp; Built for lean gains &nbsp;·&nbsp; Always consult your doctor before starting any program
+</footer>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+
+const workoutDays = [
+  {
+    day: "Mon", name: "Chest + Abs", tag: "Strength", tagClass: "tag-strength",
+    tip: "Keep rest to 60 sec — burns more fat while building muscle.",
+    strength: [
+      { name: "Flat dumbbell press", sets: "4 × 12", note: "Lying on bench — safe for femur" },
+      { name: "Incline dumbbell press", sets: "3 × 12", note: "Backrest at 45°" },
+      { name: "Seated chest fly machine", sets: "3 × 15", note: "Seated, no leg load" },
+      { name: "Tricep rope pushdown", sets: "3 × 15", note: "Standing lightly" },
+      { name: "Seated overhead tricep extension", sets: "3 × 12", note: "Seated on bench" },
+    ],
+    abs: [
+      { name: "Plank hold", sets: "3 × 60 sec", note: "Arms only, legs relaxed" },
+      { name: "Lying leg raises", sets: "3 × 15", note: "Slow and controlled" },
+      { name: "Crunches", sets: "3 × 20", note: "Standard on mat" },
+    ],
+    cardio: [
+      { name: "Seated stationary bike", sets: "15 min · low resistance", note: "Low impact — safe for femur rod" },
+    ]
+  },
+  {
+    day: "Tue", name: "Back + Abs", tag: "Strength", tagClass: "tag-strength",
+    tip: "Pull-ups are the best for a V-shaped torso. Go slow on the way down.",
+    strength: [
+      { name: "Lat pulldown", sets: "4 × 12", note: "Seated — best back exercise here" },
+      { name: "Seated cable row", sets: "4 × 12", note: "Keep back straight" },
+      { name: "Single-arm dumbbell row", sets: "3 × 12 each", note: "Supported on bench" },
+      { name: "Seated dumbbell curl", sets: "3 × 12", note: "Seated on bench" },
+      { name: "Hammer curl", sets: "3 × 15", note: "Seated or standing lightly" },
+    ],
+    abs: [
+      { name: "Russian twists", sets: "3 × 20 each", note: "Seated on mat" },
+      { name: "Ab wheel rollout", sets: "3 × 10", note: "Kneeling position" },
+      { name: "Bicycle crunches", sets: "3 × 20", note: "Lying on mat" },
+    ],
+    cardio: [
+      { name: "Upper body battle ropes / arm ergometer", sets: "12 min", note: "Upper body cardio only" },
+    ]
+  },
+  {
+    day: "Wed", name: "Safe Legs + Abs", tag: "Legs", tagClass: "tag-legs",
+    tip: "Seated and lying leg work only — zero axial compression on the femur.",
+    strength: [
+      { name: "Seated leg extension (light)", sets: "3 × 15", note: "Low weight — quad activation only" },
+      { name: "Lying hamstring curl", sets: "3 × 15", note: "Face down — zero femur load" },
+      { name: "Seated hip abduction machine", sets: "3 × 15", note: "Seated, safe for femur" },
+      { name: "Seated calf raises", sets: "4 × 20", note: "Seated with weight on knees" },
+      { name: "Glute bridge (bodyweight)", sets: "3 × 20", note: "Lying on back — very safe" },
+    ],
+    abs: [
+      { name: "V-ups", sets: "3 × 15", note: "Lying on mat" },
+      { name: "Side plank", sets: "3 × 45 sec each", note: "Bodyweight only" },
+      { name: "Reverse crunches", sets: "3 × 20", note: "Slow and controlled" },
+    ],
+    cardio: [
+      { name: "Stationary bike", sets: "20 min · easy pace", note: "Best low-impact cardio for your condition" },
+    ]
+  },
+  {
+    day: "Thu", name: "Shoulders + Abs", tag: "Strength", tagClass: "tag-strength",
+    tip: "Shoulder width makes waist look narrow. All seated pressing.",
+    strength: [
+      { name: "Seated dumbbell shoulder press", sets: "4 × 12", note: "Seated on back-supported bench" },
+      { name: "Seated lateral raises", sets: "4 × 15", note: "Light weight, full range" },
+      { name: "Seated front raises", sets: "3 × 12", note: "Alternate arms" },
+      { name: "Face pulls (cable)", sets: "3 × 15", note: "Standing lightly" },
+      { name: "Rear delt fly machine", sets: "3 × 15", note: "Seated pec-dec reversed" },
+    ],
+    abs: [
+      { name: "Hanging knee raises", sets: "3 × 15", note: "Arms take all load — leg safe" },
+      { name: "Cable crunch (kneeling)", sets: "3 × 15", note: "Kneeling on mat" },
+      { name: "Plank shoulder taps", sets: "3 × 20", note: "Slow taps, stable core" },
+    ],
+    cardio: [
+      { name: "Upper body HIIT circuit", sets: "12 min", note: "Battle ropes / seated punches / band pulls" },
+    ]
+  },
+  {
+    day: "Fri", name: "Full Upper + Core Blast", tag: "Full Body", tagClass: "tag-full",
+    tip: "Highest burn day. Full upper body + core circuit finisher. Push hard.",
+    strength: [
+      { name: "Pull-ups or assisted pull-ups", sets: "4 × 8–10", note: "Bodyweight — arms only" },
+      { name: "Dumbbell bench press", sets: "3 × 12", note: "Lying flat" },
+      { name: "Seated cable row", sets: "3 × 12", note: "Full stretch and contraction" },
+      { name: "Dumbbell shoulder press", sets: "3 × 12", note: "Seated" },
+    ],
+    abs: [
+      { name: "Hanging leg raises", sets: "3 × 12", note: "Arms bear all load — leg safe" },
+      { name: "Ab wheel rollout", sets: "3 × 12", note: "Kneeling" },
+      { name: "Plank hold", sets: "3 × 60 sec", note: "" },
+      { name: "Bicycle crunch burnout", sets: "2 × max reps", note: "Finish strong" },
+    ],
+    cardio: [
+      { name: "Seated bike steady-state", sets: "20 min · moderate pace", note: "Post-workout fat burn" },
+    ]
+  }
+];
+
+const rehabPhases = [
+  {
+    label: "Phase 1 — Activation", weeks: "Weeks 1–3 · No band", color: "var(--green)",
+    tip: "Wake up the muscles — not load them. Stop if you feel discomfort near the rod.",
+    exercises: [
+      { name: "Ankle pumps", sets: "2 × 20 reps", band: "No band", how: "Lie flat. Flex and point foot up and down slowly. Improves circulation.", safe: "Very safe" },
+      { name: "Quad sets (isometric)", sets: "3 × 10 · hold 5 sec", band: "No band", how: "Lie flat, tighten thigh by pressing knee into mat. Hold 5 seconds, release.", safe: "Very safe" },
+      { name: "Straight leg raise", sets: "3 × 12 reps", band: "No band", how: "Lie on back, bend good leg. Raise right leg to 45°, hold 2 sec, lower slowly.", safe: "Very safe" },
+      { name: "Glute bridge (bodyweight)", sets: "3 × 15 reps", band: "No band", how: "Lie on back, knees bent. Push through heels to lift hips. Squeeze glutes at top.", safe: "Very safe" },
+      { name: "Heel slides", sets: "3 × 12 reps", band: "No band", how: "Lie on back. Slide right heel toward glute by bending knee, then back out.", safe: "Very safe" },
+    ]
+  },
+  {
+    label: "Phase 2 — Resistance Band", weeks: "Weeks 4–8 · Light band", color: "#7fb8f0",
+    tip: "Use yellow (lightest) or red Theraband. Only move to medium band when 15 reps feel easy.",
+    exercises: [
+      { name: "Band straight leg raise", sets: "3 × 12 reps", band: "Light band — ankle", how: "Same as phase 1 but loop band around ankle and anchor low. Adds gentle quad resistance.", safe: "Safe" },
+      { name: "Band glute bridge", sets: "3 × 15 reps", band: "Band above knees", how: "Place band above knees. Perform glute bridge while pushing knees out against band.", safe: "Safe" },
+      { name: "Band hamstring curl (lying)", sets: "3 × 12 reps", band: "Band around ankle", how: "Lie face down. Anchor band in front, around ankle. Curl heel to glute against resistance.", safe: "Safe" },
+      { name: "Clamshells", sets: "3 × 15 each side", band: "Band above knees", how: "Lie on side, knees bent. Keeping feet together, lift top knee like a clamshell opening.", safe: "Safe" },
+      { name: "Seated band leg extension", sets: "3 × 15 reps", band: "Band around ankle", how: "Sit on chair. Loop band around ankle, anchor behind chair leg. Straighten knee against band.", safe: "Safe" },
+      { name: "Seated hip abduction", sets: "3 × 15 reps", band: "Band above knees", how: "Sit upright, band above knees. Push both knees outward, hold 2 sec.", safe: "Safe" },
+      { name: "Seated calf raise with band", sets: "3 × 20 reps", band: "Band over foot", how: "Sit on chair, loop band over foot. Press foot down against band resistance.", safe: "Safe" },
+    ]
+  },
+  {
+    label: "Phase 3 — Full Strength", weeks: "Week 9+ · Doctor cleared", color: "var(--amber)",
+    tip: "Only start after surgeon confirms good bone healing. These add standing stability.",
+    exercises: [
+      { name: "Standing band hip extension", sets: "3 × 15 each", band: "Band around ankle", how: "Stand facing wall for support. Push right leg backward against band. Targets glutes and hamstrings.", safe: "Phase 3 only" },
+      { name: "Standing band hip abduction", sets: "3 × 15 each", band: "Band around ankle", how: "Stand sideways to wall. Lift right leg outward against resistance. Hold 2 sec at top.", safe: "Phase 3 only" },
+      { name: "Standing band knee flexion", sets: "3 × 12 each", band: "Band around ankle", how: "Stand holding wall. Band anchored low behind you. Curl heel toward glute against band.", safe: "Phase 3 only" },
+      { name: "Mini band side walk", sets: "3 × 10 steps each way", band: "Band above knees", how: "Stand with band above knees, slight squat position. Take small sideways steps. No deep squat.", safe: "Phase 3 only" },
+      { name: "Single leg balance", sets: "3 × 30 sec", band: "No band", how: "Stand near wall for safety. Balance on right leg alone. Rebuild proprioception.", safe: "Phase 3 only" },
+      { name: "Wall sit (shallow 20–30°)", sets: "3 × 20 sec", band: "No band", how: "Lean on wall, slide down slightly only. Do NOT go past 30° knee bend.", safe: "Shallow only" },
+    ]
+  }
+];
+
+const mealData = [
+  {
+    icon: "☀️", iconBg: "rgba(239,159,39,0.2)", title: "Meal 1 — Breakfast", time: "7:00 – 8:00 AM",
+    kcal: "~550 kcal", kcalBg: "rgba(239,159,39,0.15)", kcalColor: "var(--amber)",
+    tip: "Breakfast breaks overnight fast. High protein sets metabolism and prevents muscle breakdown.",
+    foods: [
+      { name: "Whole eggs + egg whites", qty: "3 whole + 2 whites", note: "Scrambled or boiled — best natural protein", dot: "#EF9F27" },
+      { name: "Oats (rolled)", qty: "80g dry", note: "Slow-digesting carbs for sustained energy", dot: "#EF9F27" },
+      { name: "Banana", qty: "1 medium", note: "Natural potassium + fast carbs for workout fuel", dot: "#EF9F27" },
+      { name: "Soaked almonds", qty: "8–10 nos", note: "Overnight soaked — healthy fats and vitamin E", dot: "#EF9F27" },
+      { name: "Black coffee or green tea", qty: "1 cup", note: "No sugar — boosts metabolism and focus", dot: "#EF9F27" },
+    ]
+  },
+  {
+    icon: "🍗", iconBg: "rgba(55,138,221,0.2)", title: "Meal 2 — Pre/Post Workout", time: "12:00 – 1:00 PM",
+    kcal: "~600 kcal", kcalBg: "rgba(55,138,221,0.15)", kcalColor: "#7fb8f0",
+    tip: "Most important meal. Eat 1–1.5 hrs before OR within 45 min after workout.",
+    foods: [
+      { name: "Grilled chicken breast (boneless)", qty: "200g", note: "Leanest protein — ~46g protein per serve", dot: "#378ADD" },
+      { name: "Brown rice or 2 chapatis", qty: "1 cup cooked / 2 chapatis", note: "Complex carbs to fuel or replenish workout", dot: "#378ADD" },
+      { name: "Mixed sabzi (palak, beans, broccoli)", qty: "1 bowl", note: "Micronutrients, fibre, anti-inflammatory", dot: "#378ADD" },
+      { name: "Cucumber + tomato salad", qty: "1 small bowl", note: "With lemon and black pepper — zero calorie filler", dot: "#378ADD" },
+      { name: "Creatine (if taking)", qty: "5g in water", note: "Take right after workout with this meal", dot: "#378ADD" },
+    ]
+  },
+  {
+    icon: "🌅", iconBg: "rgba(29,158,117,0.2)", title: "Meal 3 — Evening", time: "4:30 – 5:30 PM",
+    kcal: "~550 kcal", kcalBg: "rgba(29,158,117,0.15)", kcalColor: "var(--green)",
+    tip: "Protein-rich mid-afternoon meal prevents muscle breakdown and keeps you full before dinner.",
+    foods: [
+      { name: "Greek yogurt or hung curd", qty: "200g", note: "High protein dairy — 15–18g protein per serve", dot: "#1D9E75" },
+      { name: "Boiled eggs or egg bhurji", qty: "2 eggs", note: "Quick protein top-up", dot: "#1D9E75" },
+      { name: "Sweet potato (boiled)", qty: "1 medium", note: "Slow carb, rich in potassium — great for leg recovery", dot: "#1D9E75" },
+      { name: "Mixed nuts", qty: "1 small handful", note: "Almonds, walnuts, cashews — healthy fats", dot: "#1D9E75" },
+      { name: "Coconut water", qty: "1 glass", note: "Natural electrolytes — important in Mumbai heat", dot: "#1D9E75" },
+    ]
+  },
+  {
+    icon: "🌙", iconBg: "rgba(127,119,221,0.2)", title: "Meal 4 — Dinner", time: "8:00 – 9:00 PM",
+    kcal: "~500 kcal", kcalBg: "rgba(127,119,221,0.15)", kcalColor: "#b4b0f0",
+    tip: "High protein, low carb. Your body builds muscle while you sleep — give it protein to work with.",
+    foods: [
+      { name: "Fish (surmai / pomfret / rohu) or chicken", qty: "180–200g", note: "Grilled, baked or light curry — no heavy oil", dot: "#7F77DD" },
+      { name: "Dal (moong or masoor)", qty: "1 bowl", note: "Extra protein + fibre — light on digestion", dot: "#7F77DD" },
+      { name: "Large salad", qty: "2 bowls", note: "Lettuce, cucumber, onion, lemon — fills up with zero calories", dot: "#7F77DD" },
+      { name: "1 chapati (optional)", qty: "1 only", note: "Skip if not hungry — keep carbs low at night", dot: "#7F77DD" },
+      { name: "Warm turmeric milk (haldi doodh)", qty: "1 cup before bed", note: "Anti-inflammatory — helps bone and rod healing overnight", dot: "#7F77DD" },
+    ]
+  }
+];
+
+const avoidItems = [
+  { name: "Sugar & sweets", note: "Mithai, cold drinks, juices — instant fat storage, zero nutrition" },
+  { name: "Maida products", note: "White bread, pav, biscuits, naan — spike insulin, promote fat" },
+  { name: "Fried food", note: "Vada pav, samosa, chips — high calorie, inflammatory fats" },
+  { name: "Alcohol", note: "Blocks muscle protein synthesis by 37% — biggest enemy" },
+  { name: "Packaged snacks", note: "Maggi, chips, namkeen — empty calories, high sodium" },
+  { name: "Late night heavy carbs", note: "Rice/chapati after 9 PM stored as fat during sleep" },
+  { name: "Skipping meals", note: "Body breaks down muscle for energy — counterproductive" },
+];
+
+const goldRules = [
+  "Drink 3.5–4 litres of water daily. Mumbai heat drains more through sweat.",
+  "Eat protein in every meal. 160g/day = ~40g per meal.",
+  "Eat within 45 min after workout. Fastest nutrient absorption window.",
+  "Never skip breakfast. 8 hours fasting overnight — muscles need fuel.",
+  "Keep dinner low carb. Low activity at night = carbs stored as fat.",
+  "Cook with minimal oil — olive oil or coconut oil only.",
+  "Sleep 8 hours. 70% of muscle is built during deep sleep.",
+  "Mention creatine + new exercises to your orthopaedic doctor.",
+];
+
+const supplements = [
+  { icon: "⚡", bg: "rgba(29,158,117,0.15)", name: "Creatine Monohydrate", dose: "5g after workout", note: "Most researched supplement — safe, effective for lean muscle" },
+  { icon: "🥛", bg: "rgba(55,138,221,0.15)", name: "Whey Protein (optional)", dose: "1 scoop if protein is low", note: "Use only if daily protein target isn't met through food" },
+  { icon: "☀️", bg: "rgba(239,159,39,0.15)", name: "Vitamin D3", dose: "1,000–2,000 IU daily", note: "Critical for bone healing around your femur rod" },
+  { icon: "🦴", bg: "rgba(127,119,221,0.15)", name: "Calcium + Magnesium", dose: "As per doctor's advice", note: "Supports femur rod healing and bone density" },
+  { icon: "🐟", bg: "rgba(29,158,117,0.15)", name: "Omega-3 Fish Oil", dose: "1g daily with food", note: "Reduces inflammation, supports joint and bone health" },
+  { icon: "💊", bg: "rgba(136,136,132,0.15)", name: "Multivitamin", dose: "1 tablet daily with breakfast", note: "Fills micronutrient gaps, supports recovery" },
+];
+
+// ─── RENDER WORKOUT ────────────────────────────────────────────────────────────
+let activeDay = 0;
+
+function renderWorkout() {
+  const grid = document.getElementById('dayGrid');
+  grid.innerHTML = workoutDays.map((d, i) => `
+    <div class="day-card ${i === activeDay ? 'active' : ''}" onclick="setDay(${i})">
+      <div class="dc-day">${d.day}</div>
+      <div class="dc-name">${d.name}</div>
+      <span class="dc-tag ${d.tagClass}">${d.tag}</span>
+    </div>
+  `).join('');
+
+  const d = workoutDays[activeDay];
+  const makeRows = (arr, cls) => arr.map((e, i) => `
+    <div class="ex-row">
+      <div class="ex-n ${cls}">${i+1}</div>
+      <div class="ex-body">
+        <div class="ex-name">${e.name}<span class="safe-pill">✓ safe</span></div>
+        ${e.note ? `<div class="ex-note">${e.note}</div>` : ''}
+      </div>
+      <div class="ex-sets">${e.sets}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('workoutDetail').innerHTML = `
+    <div class="wd-header">
+      <div>
+        <div class="wd-title">${d.day} — ${d.name}</div>
+        <div class="wd-meta">45 min strength · 15 min cardio · abs included</div>
+      </div>
+      <div class="wd-cals">~420 kcal burned</div>
+    </div>
+    <div class="ex-section">
+      <div class="ex-sec-title">// Strength training</div>
+      ${makeRows(d.strength, 'ex-n-blue')}
+    </div>
+    <div class="ex-section">
+      <div class="ex-sec-title">// Abs circuit</div>
+      ${makeRows(d.abs, 'ex-n-purple')}
+    </div>
+    <div class="ex-section">
+      <div class="ex-sec-title">// Cardio / fat burn</div>
+      ${makeRows(d.cardio, 'ex-n-amber')}
+    </div>
+    <div class="tip-strip"><p><strong>Kohli tip:</strong> ${d.tip}</p></div>
+  `;
+}
+
+function setDay(i) { activeDay = i; renderWorkout(); }
+
+// ─── RENDER REHAB ─────────────────────────────────────────────────────────────
+let activePhase = 0;
+
+function renderRehab() {
+  document.getElementById('phaseTabs').innerHTML = rehabPhases.map((p, i) => `
+    <button class="phase-tab ${i === activePhase ? 'active' : ''}" onclick="setPhase(${i})">${p.label}</button>
+  `).join('');
+
+  const ph = rehabPhases[activePhase];
+  document.getElementById('phaseDetail').innerHTML = `
+    <div class="tip-strip" style="margin-bottom:1.5rem;"><p><strong>Phase goal:</strong> ${ph.tip}</p></div>
+    <div class="rehab-grid">
+      ${ph.exercises.map((e, i) => `
+        <div class="rehab-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+            <div style="width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--muted);">${i+1}</div>
+            <div class="rehab-card-title">${e.name}</div>
+          </div>
+          <div class="rehab-card-how">${e.how}</div>
+          <div class="rehab-pills">
+            <span class="rpill" style="background:rgba(55,138,221,0.12);color:#7fb8f0;">${e.sets}</span>
+            <span class="rpill" style="background:rgba(127,119,221,0.12);color:#b4b0f0;">${e.band}</span>
+            <span class="rpill" style="background:rgba(29,158,117,0.12);color:var(--green);">${e.safe}</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function setPhase(i) { activePhase = i; renderRehab(); }
+
+// ─── RENDER MEALS ─────────────────────────────────────────────────────────────
+let activeMeal = 0;
+
+function renderMeals() {
+  document.getElementById('mealTabs').innerHTML = mealData.map((m, i) => `
+    <button class="meal-tab ${i === activeMeal ? 'active' : ''}" onclick="setMeal(${i})">${m.icon} ${['Breakfast','Pre/Post Workout','Evening','Dinner'][i]}</button>
+  `).join('');
+
+  const m = mealData[activeMeal];
+  document.getElementById('mealDetail').innerHTML = `
+    <div class="meal-hd">
+      <div class="meal-icon" style="background:${m.iconBg};">${m.icon}</div>
+      <div>
+        <div class="meal-title-text">${m.title}</div>
+        <div class="meal-time-text">${m.time}</div>
+      </div>
+      <span class="meal-kcal" style="background:${m.kcalBg};color:${m.kcalColor};">${m.kcal}</span>
+    </div>
+    ${m.foods.map(f => `
+      <div class="food-item">
+        <div class="food-dot2" style="background:${f.dot};"></div>
+        <div style="flex:1;">
+          <div class="food-name2">${f.name}</div>
+          <div class="food-desc">${f.note}</div>
+        </div>
+        <div class="food-qty2">${f.qty}</div>
+      </div>
+    `).join('')}
+    <div class="tip-strip" style="margin-top:1rem;"><p><strong>Why:</strong> ${m.tip}</p></div>
+  `;
+
+  document.getElementById('avoidList').innerHTML = avoidItems.map(a => `
+    <div class="avoid-item">
+      <div class="x-dot">✕</div>
+      <div><div class="ai-name">${a.name}</div><div class="ai-note">${a.note}</div></div>
+    </div>
+  `).join('');
+
+  document.getElementById('rulesList').innerHTML = goldRules.map((r, i) => `
+    <div class="avoid-item">
+      <div class="check-dot">${i+1}</div>
+      <div><div class="ai-note" style="color:rgba(255,255,255,0.7);">${r}</div></div>
+    </div>
+  `).join('');
+}
+
+function setMeal(i) { activeMeal = i; renderMeals(); }
+
+// ─── RENDER SUPPS ─────────────────────────────────────────────────────────────
+function renderSupps() {
+  document.getElementById('suppGrid').innerHTML = supplements.map(s => `
+    <div class="supp-card">
+      <div class="supp-icon" style="background:${s.bg};">${s.icon}</div>
+      <div>
+        <div class="supp-name">${s.name}</div>
+        <div class="supp-dose">${s.dose}</div>
+        <div class="supp-note">${s.note}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── NAV SECTION TOGGLE ───────────────────────────────────────────────────────
+function showSection(sec) {
+  const sections = ['workout','legs','meals','supps'];
+  sections.forEach(s => {
+    document.getElementById('section-' + s).style.display = s === sec ? 'block' : 'none';
+  });
+  document.querySelectorAll('.nav-link').forEach((el, i) => {
+    el.classList.toggle('active', sections[i] === sec);
+  });
+  document.getElementById('section-' + sec).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ─── SCROLL FADE ──────────────────────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+renderWorkout();
+renderRehab();
+renderMeals();
+renderSupps();
+
+// Show all sections on load (scroll-based hiding optional)
+['workout','legs','meals','supps'].forEach(s => {
+  document.getElementById('section-' + s).style.display = 'block';
+});
+document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+document.querySelectorAll('.nav-link')[0].classList.add('active');
+</script>
+</body>
+</html>
